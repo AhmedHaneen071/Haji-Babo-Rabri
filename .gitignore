@@ -36,3 +36,6 @@ out/
 
 # TypeScript
 tsconfig.tsbuildinfo
+
+# GitHub Pages workflow only; keep skill/prompt files out
+.github/prompts/
