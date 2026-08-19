@@ -1,4 +1,3 @@
-@"
 # Dependencies
 node_modules/
 
@@ -34,4 +33,9 @@ out/
 .trae/
 .warp/
 .windsurf/
-"@ | Set-Content .gitignore
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# GitHub
+.github/
