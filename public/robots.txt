@@ -1,0 +1,6 @@
+# Haji Babo Rabri - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://hajibaborabri.com/sitemap.xml
