@@ -1,5 +1,6 @@
 ﻿'use client';
 
+import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 interface OrnamentDividerProps {
@@ -10,9 +11,31 @@ interface OrnamentDividerProps {
 export function OrnamentDivider({ className, symbol = 'HBR' }: OrnamentDividerProps) {
   return (
     <div className={cn('flex items-center gap-3 my-2', className)}>
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
-      <span className="text-brand-gold text-xs">{symbol}</span>
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
+      <motion.div
+        className="flex-1 h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent"
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{ transformOrigin: 'left' }}
+      />
+      <motion.span
+        className="text-brand-gold text-xs"
+        initial={{ opacity: 0, scale: 0.6 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.3 }}
+      >
+        {symbol}
+      </motion.span>
+      <motion.div
+        className="flex-1 h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent"
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{ transformOrigin: 'right' }}
+      />
     </div>
   );
 }
@@ -44,7 +67,13 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div className={cn(centered ? 'text-center' : '', 'mb-12', className)}>
+    <motion.div
+      className={cn(centered ? 'text-center' : '', 'mb-12', className)}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       {badge && (
         <div className={cn('flex mb-4', centered ? 'justify-center' : '')}>
           <span className="badge-gold uppercase tracking-widest text-xs">
@@ -57,7 +86,7 @@ export function SectionHeading({
       {subtitle && (
         <p className="section-subtitle mt-4 max-w-2xl mx-auto">{subtitle}</p>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -71,17 +100,21 @@ export function HeritageBadge({
   className,
 }: HeritageBadgeProps) {
   return (
-    <div
+    <motion.div
       className={cn(
         'inline-flex items-center gap-2 px-4 py-2 rounded-full gold-border bg-brand-gold/10',
         className
       )}
+      initial={{ opacity: 0, scale: 0.9, y: 12 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <span className="text-brand-gold text-sm font-serif">HBR</span>
       <span className="text-brand-gold-light text-xs font-semibold uppercase tracking-widest">
         {text}
       </span>
       <span className="text-brand-gold text-sm font-serif">HBR</span>
-    </div>
+    </motion.div>
   );
 }

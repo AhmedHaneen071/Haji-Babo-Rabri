@@ -1,9 +1,20 @@
 ﻿'use client';
 
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import { Award, Clock, Milk, ShoppingCart, Sparkles } from 'lucide-react';
 import { HeritageBadge, OrnamentDivider } from '@/components/ui/OrnamentDivider';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } },
+};
 
 export default function HeroSection() {
   return (
@@ -31,28 +42,41 @@ export default function HeroSection() {
         style={{ background: 'linear-gradient(90deg, transparent, #D4A62A, #E8C547, #D4A62A, transparent)' }}
       />
 
-      <Sparkles
-        size={56}
+      <motion.div
         className="absolute top-24 left-8 md:left-12 text-brand-gold/20 select-none pointer-events-none hidden lg:block"
+        animate={{ opacity: [0.1, 0.3, 0.1], rotate: [0, 20, 0], scale: [1, 1.15, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         aria-hidden="true"
-      />
-      <Sparkles
-        size={56}
+      >
+        <Sparkles size={56} />
+      </motion.div>
+      <motion.div
         className="absolute top-24 right-8 md:right-12 text-brand-gold/20 select-none pointer-events-none hidden lg:block"
+        animate={{ opacity: [0.1, 0.3, 0.1], rotate: [0, -20, 0], scale: [1, 1.15, 1] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
         aria-hidden="true"
-      />
+      >
+        <Sparkles size={56} />
+      </motion.div>
 
       {/* Main content */}
-      <div className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto pt-24 pb-16">
+      <motion.div
+        className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto pt-24 pb-16"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
         {/* Heritage badge */}
-        <div className="animate-fade-in mb-8">
+        <motion.div className="mb-8" variants={item}>
           <HeritageBadge />
-        </div>
+        </motion.div>
 
         {/* Logo emblem */}
-        <div className="animate-fade-up animate-delay-100 flex justify-center mb-8">
-          <div
-            className="relative w-28 h-28 md:w-36 md:h-36 rounded-full flex items-center justify-center animate-float"
+        <motion.div variants={item} className="flex justify-center mb-8">
+          <motion.div
+            className="relative w-28 h-28 md:w-36 md:h-36 rounded-full flex items-center justify-center"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               background: 'radial-gradient(circle at 40% 35%, #1A7A50, #0D5C3A)',
               border: '2px solid rgba(212,166,42,0.5)',
@@ -73,11 +97,11 @@ export default function HeroSection() {
                 Since 1974
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Brand name */}
-        <div className="animate-fade-up animate-delay-200">
+        <motion.div variants={item}>
           <div className="text-brand-gold/70 font-display text-sm md:text-base uppercase tracking-[0.3em] mb-2">
             The Original
           </div>
@@ -99,10 +123,10 @@ export default function HeroSection() {
           >
             RABRI
           </h1>
-        </div>
+        </motion.div>
 
         {/* Tagline */}
-        <div className="animate-fade-up animate-delay-300 mt-5">
+        <motion.div variants={item} className="mt-5">
           <OrnamentDivider className="max-w-xs mx-auto mb-4" />
           <p
             className="font-display italic text-xl md:text-2xl lg:text-3xl text-brand-cream/90"
@@ -111,28 +135,46 @@ export default function HeroSection() {
             &ldquo;Heritage in every spoon&rdquo;
           </p>
           <OrnamentDivider className="max-w-xs mx-auto mt-4" />
-        </div>
+        </motion.div>
 
         {/* Description */}
-        <p className="animate-fade-up animate-delay-400 text-brand-cream/65 text-base md:text-lg max-w-2xl mx-auto mt-6 leading-relaxed">
+        <motion.p
+          variants={item}
+          className="text-brand-cream/65 text-base md:text-lg max-w-2xl mx-auto mt-6 leading-relaxed"
+        >
           Authentic Hyderabadi rabri &amp; traditional dairy delicacies, crafted with
           the taste and tradition we&apos;ve preserved since 1974.
-        </p>
+        </motion.p>
 
         {/* CTA buttons */}
-        <div className="animate-fade-up animate-delay-500 flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-          <Link href="/menu" className="btn-gold text-base px-8 py-4 text-center animate-pulse-gold">
-            <ShoppingCart size={18} aria-hidden="true" />
-            Order Now
-          </Link>
-          <Link href="/menu" className="btn-outline-gold text-base px-8 py-4 text-center">
-            Explore Our Menu
-          </Link>
-          <WhatsAppButton variant="inline" label="WhatsApp Order" />
-        </div>
+        <motion.div
+          variants={item}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.96 }}
+          >
+            <Link href="/menu" className="btn-gold text-base px-8 py-4 text-center inline-flex items-center gap-2">
+              <ShoppingCart size={18} aria-hidden="true" />
+              Order Now
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+            <Link href="/menu" className="btn-outline-gold text-base px-8 py-4 text-center inline-block">
+              Explore Our Menu
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+            <WhatsAppButton variant="inline" label="WhatsApp Order" />
+          </motion.div>
+        </motion.div>
 
         {/* Trust indicators */}
-        <div className="animate-fade-up animate-delay-600 flex flex-wrap items-center justify-center gap-6 mt-12">
+        <motion.div
+          variants={item}
+          className="flex flex-wrap items-center justify-center gap-6 mt-12"
+        >
           {[
             { icon: Award, label: 'Since 1974' },
             { icon: Sparkles, label: 'Premium Quality' },
@@ -144,16 +186,20 @@ export default function HeroSection() {
               <span className="font-medium">{item.label}</span>
             </div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+      >
         <div className="flex flex-col items-center gap-1">
           <span className="text-brand-gold/40 text-xs uppercase tracking-widest">Scroll</span>
           <div className="w-px h-8 bg-gradient-to-b from-brand-gold/40 to-transparent" />
         </div>
-      </div>
+      </motion.div>
 
       {/* Bottom decorative border */}
       <div

@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { motion } from 'motion/react';
 import ProductGrid from './ProductGrid';
 import { ProductCategory } from '@/types';
 import { categories } from '@/data/products';
@@ -13,7 +14,15 @@ function MenuGridInner() {
     ? (requested as ProductCategory)
     : 'all';
 
-  return <ProductGrid initialCategory={initialCategory} />;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+    >
+      <ProductGrid initialCategory={initialCategory} />
+    </motion.div>
+  );
 }
 
 export default function MenuGrid() {

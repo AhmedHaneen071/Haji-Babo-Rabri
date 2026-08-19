@@ -1,5 +1,6 @@
 ﻿import { Metadata } from 'next';
 import Link from 'next/link';
+import Reveal from '@/components/ui/Reveal';
 import { OrnamentDivider, GoldDivider, HeritageBadge } from '@/components/ui/OrnamentDivider';
 
 export const metadata: Metadata = {
@@ -58,13 +59,19 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#041A12]" />
         <div className="relative section-container text-center">
           <HeritageBadge text="Since 1974" className="mb-6 inline-flex" />
-          <h1 className="font-serif font-black text-4xl md:text-6xl lg:text-7xl text-brand-cream mb-4">
-            Our Story
-          </h1>
-          <OrnamentDivider className="max-w-xs mx-auto mb-6" />
-          <p className="text-brand-cream/65 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Half a century of tradition, taste, and trust  the story of Hyderabad&apos;s most beloved rabri house.
-          </p>
+          <Reveal>
+            <h1 className="font-serif font-black text-4xl md:text-6xl lg:text-7xl text-brand-cream mb-4">
+              Our Story
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <OrnamentDivider className="max-w-xs mx-auto mb-6" />
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="text-brand-cream/65 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+              Half a century of tradition, taste, and trust  the story of Hyderabad&apos;s most beloved rabri house.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -72,34 +79,37 @@ export default function AboutPage() {
       <section className="section-container section-padding">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="badge-gold mb-4 inline-block">The Foundation</span>
-              <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-5 leading-tight">
-                Born from a passion for authentic Hyderabadi taste
-              </h2>
-              <GoldDivider className="mb-6 max-w-[80px]" />
-              <div className="space-y-4 text-brand-cream/65 leading-relaxed">
-                <p>
-                  In 1974, Haji Babo set out to share the authentic taste of traditional Hyderabadi
-                  rabri with the world. Using only the finest full-fat milk, slow-cooked for hours
-                  over gentle flame, he created a rabri that captured everything beautiful about
-                  this centuries-old dessert.
-                </p>
-                <p>
-                  What began as a humble shop on Salahuddin Road quickly became a destination.
-                  People came from across Hyderabad  and beyond  to experience the thick,
-                  creamy, saffron-kissed rabri that could only come from Haji Babo&apos;s kitchen.
-                </p>
-                <p>
-                  Today, three generations later, the recipes remain unchanged. The family continues
-                  to uphold every tradition that made Haji Babo Rabri a household name across
-                  Pakistan.
-                </p>
+            <Reveal>
+              <div>
+                <span className="badge-gold mb-4 inline-block">The Foundation</span>
+                <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-5 leading-tight">
+                  Born from a passion for authentic Hyderabadi taste
+                </h2>
+                <GoldDivider className="mb-6 max-w-[80px]" />
+                <div className="space-y-4 text-brand-cream/65 leading-relaxed">
+                  <p>
+                    In 1974, Haji Babo set out to share the authentic taste of traditional Hyderabadi
+                    rabri with the world. Using only the finest full-fat milk, slow-cooked for hours
+                    over gentle flame, he created a rabri that captured everything beautiful about
+                    this centuries-old dessert.
+                  </p>
+                  <p>
+                    What began as a humble shop on Salahuddin Road quickly became a destination.
+                    People came from across Hyderabad  and beyond  to experience the thick,
+                    creamy, saffron-kissed rabri that could only come from Haji Babo&apos;s kitchen.
+                  </p>
+                  <p>
+                    Today, three generations later, the recipes remain unchanged. The family continues
+                    to uphold every tradition that made Haji Babo Rabri a household name across
+                    Pakistan.
+                  </p>
+                </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* Visual */}
-            <div className="relative">
+            <Reveal delay={0.15}>
+              <div className="relative">
               <div
                 className="rounded-2xl overflow-hidden aspect-square flex items-center justify-center"
                 style={{
@@ -135,7 +145,8 @@ export default function AboutPage() {
                   border: '1px solid rgba(212,166,42,0.2)',
                 }}
               />
-            </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -161,44 +172,45 @@ export default function AboutPage() {
 
             <div className="space-y-10">
               {milestones.map((m, i) => (
-                <div
-                  key={m.year}
-                  className={`relative flex items-start gap-6 md:gap-0 ${
-                    i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Content */}
+                <Reveal key={m.year} delay={i * 0.1}>
                   <div
-                    className={`flex-1 pl-14 md:pl-0 ${
-                      i % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'
+                    className={`relative flex items-start gap-6 md:gap-0 ${
+                      i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                     }`}
                   >
+                    {/* Content */}
                     <div
-                      className="p-5 rounded-xl"
-                      style={{
-                        background: 'linear-gradient(145deg, #0D5C3A, #072D1E)',
-                        border: '1px solid rgba(212,166,42,0.2)',
-                      }}
+                      className={`flex-1 pl-14 md:pl-0 ${
+                        i % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'
+                      }`}
                     >
                       <div
-                        className="font-display font-bold text-2xl mb-1"
+                        className="p-5 rounded-xl"
                         style={{
-                          background: 'linear-gradient(135deg, #D4A62A, #E8C547)',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
+                          background: 'linear-gradient(145deg, #0D5C3A, #072D1E)',
+                          border: '1px solid rgba(212,166,42,0.2)',
                         }}
                       >
-                        {m.year}
+                        <div
+                          className="font-display font-bold text-2xl mb-1"
+                          style={{
+                            background: 'linear-gradient(135deg, #D4A62A, #E8C547)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          {m.year}
+                        </div>
+                        <h3 className="font-serif font-bold text-brand-cream text-lg mb-2">{m.title}</h3>
+                        <p className="text-brand-cream/60 text-sm leading-relaxed">{m.description}</p>
                       </div>
-                      <h3 className="font-serif font-bold text-brand-cream text-lg mb-2">{m.title}</h3>
-                      <p className="text-brand-cream/60 text-sm leading-relaxed">{m.description}</p>
                     </div>
-                  </div>
 
-                  {/* Center dot */}
-                  <div className="absolute left-6 md:left-1/2 top-6 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-brand-gold bg-brand-green-darker" />
-                </div>
+                    {/* Center dot */}
+                    <div className="absolute left-6 md:left-1/2 top-6 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-brand-gold bg-brand-green-darker" />
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -214,11 +226,11 @@ export default function AboutPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {values.map((v) => (
-            <div
-              key={v.title}
-              className="p-6 rounded-xl group hover:-translate-y-1 transition-transform duration-300"
-              style={{
+          {values.map((v, i) => (
+            <Reveal key={v.title} delay={(i % 3) * 0.1}>
+              <div
+                className="p-6 rounded-xl group hover:-translate-y-1 transition-transform duration-300 h-full"
+                style={{
                 background: 'linear-gradient(145deg, #0D5C3A, #072D1E)',
                 border: '1px solid rgba(212,166,42,0.15)',
               }}
@@ -228,7 +240,8 @@ export default function AboutPage() {
                 {v.title}
               </h3>
               <p className="text-brand-cream/55 text-sm leading-relaxed">{v.desc}</p>
-            </div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -239,22 +252,24 @@ export default function AboutPage() {
         style={{ background: 'linear-gradient(135deg, #4A080B, #7A1015, #4A080B)' }}
       >
         <div className="section-container text-center">
-          <div className="text-5xl mb-4" aria-hidden="true">🥣</div>
-          <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-4">
-            Taste the Heritage
-          </h2>
-          <OrnamentDivider className="max-w-xs mx-auto mb-4" />
-          <p className="text-brand-cream/65 mb-8 max-w-xl mx-auto">
-            Every spoon carries fifty years of tradition. Order now and experience what generations of Hyderabadis have loved.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/menu" className="btn-gold text-base px-8 py-3.5">
-              Order Now
-            </Link>
-            <Link href="/contact" className="btn-outline-gold text-base px-8 py-3.5">
-              Visit Our Shop
-            </Link>
-          </div>
+          <Reveal>
+            <div className="text-5xl mb-4" aria-hidden="true">🥣</div>
+            <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-4">
+              Taste the Heritage
+            </h2>
+            <OrnamentDivider className="max-w-xs mx-auto mb-4" />
+            <p className="text-brand-cream/65 mb-8 max-w-xl mx-auto">
+              Every spoon carries fifty years of tradition. Order now and experience what generations of Hyderabadis have loved.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/menu" className="btn-gold text-base px-8 py-3.5">
+                Order Now
+              </Link>
+              <Link href="/contact" className="btn-outline-gold text-base px-8 py-3.5">
+                Visit Our Shop
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </main>

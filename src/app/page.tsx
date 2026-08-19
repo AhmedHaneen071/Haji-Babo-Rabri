@@ -3,6 +3,7 @@ import { ArrowRight, Clock, MapPin, Phone } from 'lucide-react';
 import HeroSection from '@/components/sections/HeroSection';
 import HeritageStrip from '@/components/sections/HeritageStrip';
 import ProductGrid from '@/components/products/ProductGrid';
+import Reveal from '@/components/ui/Reveal';
 import { SectionHeading, OrnamentDivider } from '@/components/ui/OrnamentDivider';
 
 export default function HomePage() {
@@ -31,23 +32,27 @@ export default function HomePage() {
         style={{ background: 'linear-gradient(135deg, #4A080B, #7A1015, #4A080B)' }}
       >
         <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="badge-gold mb-4 inline-block">Heritage Since 1974</span>
-              <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-5 leading-tight">
-                Slow-cooked dairy sweets made the traditional Hyderabadi way
-              </h2>
-              <OrnamentDivider className="max-w-xs mb-6" />
-              <p className="text-brand-cream/65 leading-relaxed mb-6">
-                Every batch starts with full-fat milk and patient reduction over gentle heat.
-                The result is the thick malai texture, saffron aroma, and balanced sweetness
-                people come back for across generations.
-              </p>
-              <Link href="/about" className="btn-outline-gold text-base px-7 py-3">
-                Read Our Story
-              </Link>
+          <Reveal>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div>
+                <span className="badge-gold mb-4 inline-block">Heritage Since 1974</span>
+                <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-5 leading-tight">
+                  Slow-cooked dairy sweets made the traditional Hyderabadi way
+                </h2>
+                <OrnamentDivider className="max-w-xs mb-6" />
+                <p className="text-brand-cream/65 leading-relaxed mb-6">
+                  Every batch starts with full-fat milk and patient reduction over gentle heat.
+                  The result is the thick malai texture, saffron aroma, and balanced sweetness
+                  people come back for across generations.
+                </p>
+                <Link href="/about" className="btn-outline-gold text-base px-7 py-3">
+                  Read Our Story
+                </Link>
+              </div>
             </div>
+          </Reveal>
 
+          <Reveal delay={0.15} className="mt-10 lg:mt-0">
             <div
               className="grid grid-cols-1 sm:grid-cols-3 gap-4 rounded-xl p-5"
               style={{
@@ -70,7 +75,7 @@ export default function HomePage() {
                 );
               })}
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </main>

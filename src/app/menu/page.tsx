@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import MenuGrid from '@/components/products/MenuGrid';
+import Reveal from '@/components/ui/Reveal';
 import { HeritageBadge, OrnamentDivider } from '@/components/ui/OrnamentDivider';
 
 export const metadata: Metadata = {
@@ -22,13 +23,19 @@ export default function MenuPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#041A12] pointer-events-none" />
         <div className="relative section-container text-center">
           <HeritageBadge text="Fresh Daily" className="mb-6 inline-flex" />
-          <h1 className="font-serif font-black text-4xl md:text-6xl text-brand-cream mb-4">
-            Menu & Online Order
-          </h1>
-          <OrnamentDivider className="max-w-xs mx-auto mb-5" />
-          <p className="text-brand-cream/65 text-lg max-w-2xl mx-auto leading-relaxed">
-            Choose your favorites, review your cart, and place the order by checkout or WhatsApp.
-          </p>
+          <Reveal>
+            <h1 className="font-serif font-black text-4xl md:text-6xl text-brand-cream mb-4">
+              Menu & Online Order
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <OrnamentDivider className="max-w-xs mx-auto mb-5" />
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="text-brand-cream/65 text-lg max-w-2xl mx-auto leading-relaxed">
+              Choose your favorites, review your cart, and place the order by checkout or WhatsApp.
+            </p>
+          </Reveal>
         </div>
       </section>
 

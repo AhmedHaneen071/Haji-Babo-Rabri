@@ -1,5 +1,6 @@
 ﻿import { Metadata } from 'next';
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
+import Reveal from '@/components/ui/Reveal';
 import { OrnamentDivider, HeritageBadge } from '@/components/ui/OrnamentDivider';
 
 export const metadata: Metadata = {
@@ -63,27 +64,33 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#041A12] pointer-events-none" />
         <div className="relative section-container text-center">
           <HeritageBadge text="Find Us" className="mb-6 inline-flex" />
-          <h1 className="font-serif font-black text-4xl md:text-6xl text-brand-cream mb-4">
-            Visit Us
-          </h1>
-          <OrnamentDivider className="max-w-xs mx-auto mb-6" />
-          <p className="text-brand-cream/65 text-lg max-w-xl mx-auto leading-relaxed">
-            Come experience the authentic taste in person, or order for delivery  we&apos;re
-            here 24 hours, every day.
-          </p>
+          <Reveal>
+            <h1 className="font-serif font-black text-4xl md:text-6xl text-brand-cream mb-4">
+              Visit Us
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <OrnamentDivider className="max-w-xs mx-auto mb-6" />
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="text-brand-cream/65 text-lg max-w-xl mx-auto leading-relaxed">
+              Come experience the authentic taste in person, or order for delivery  we&apos;re
+              here 24 hours, every day.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Contact cards */}
       <section className="section-container py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {contactCards.map((item) => {
+          {contactCards.map((item, i) => {
             const Icon = item.icon;
             return (
-              <div
-                key={item.title}
-                className="p-6 rounded-xl flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-300"
-                style={{
+              <Reveal key={item.title} delay={(i % 4) * 0.08}>
+                <div
+                  className="p-6 rounded-xl flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-300 h-full"
+                  style={{
                   background: 'linear-gradient(145deg, #0D5C3A, #072D1E)',
                   border: '1px solid rgba(212,166,42,0.2)',
                 }}
@@ -118,6 +125,7 @@ export default function ContactPage() {
                   </a>
                 )}
               </div>
+              </Reveal>
             );
           })}
         </div>
@@ -125,13 +133,14 @@ export default function ContactPage() {
 
       {/* Map placeholder */}
       <section className="section-container pb-16">
-        <div
-          className="rounded-2xl overflow-hidden relative"
-          style={{
-            border: '1px solid rgba(212,166,42,0.25)',
-            height: '400px',
-          }}
-        >
+        <Reveal>
+          <div
+            className="rounded-2xl overflow-hidden relative"
+            style={{
+              border: '1px solid rgba(212,166,42,0.25)',
+              height: '400px',
+            }}
+          >
           <div
             className="absolute inset-0 flex flex-col items-center justify-center text-center p-8"
             style={{ background: 'linear-gradient(145deg, #0D5C3A, #072D1E)' }}
@@ -158,7 +167,8 @@ export default function ContactPage() {
               </a>
             </div>
           </div>
-        </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* WhatsApp CTA */}
@@ -170,16 +180,17 @@ export default function ContactPage() {
         }}
       >
         <div className="section-container text-center">
-          <MessageCircle size={40} className="text-brand-gold mx-auto mb-4" />
-          <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-4">
-            Order via WhatsApp
-          </h2>
-          <OrnamentDivider className="max-w-xs mx-auto mb-4" />
-          <p className="text-brand-cream/65 mb-8 max-w-lg mx-auto">
-            The fastest way to order. Message us on WhatsApp and we&apos;ll confirm your
-            order within minutes.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Reveal>
+            <MessageCircle size={40} className="text-brand-gold mx-auto mb-4" />
+            <h2 className="font-serif font-bold text-3xl md:text-4xl text-brand-cream mb-4">
+              Order via WhatsApp
+            </h2>
+            <OrnamentDivider className="max-w-xs mx-auto mb-4" />
+            <p className="text-brand-cream/65 mb-8 max-w-lg mx-auto">
+              The fastest way to order. Message us on WhatsApp and we&apos;ll confirm your
+              order within minutes.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="https://wa.me/923122307882?text=Assalam+o+Alaikum!+I+would+like+to+place+an+order+from+Haji+Babo+Rabri."
               target="_blank"
@@ -200,6 +211,7 @@ export default function ContactPage() {
                Call +92 312 2307882
             </a>
           </div>
+          </Reveal>
         </div>
       </section>
     </main>

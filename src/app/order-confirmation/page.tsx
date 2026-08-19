@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import { CheckCircle2, Home, MessageCircle, ShoppingBag } from 'lucide-react';
 import { CartItem, CheckoutForm } from '@/types';
 import { GoldDivider, OrnamentDivider } from '@/components/ui/OrnamentDivider';
@@ -38,14 +39,23 @@ export default function OrderConfirmationPage() {
   return (
     <main className="min-h-screen pt-24 pb-16" style={{ background: '#041A12' }}>
       <div className="section-container max-w-4xl">
-        <div
+        <motion.div
           className="rounded-xl p-6 md:p-10 text-center"
+          initial={{ opacity: 0, y: 32, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
           style={{
             background: 'linear-gradient(145deg, #0D5C3A, #072D1E)',
             border: '1px solid rgba(212,166,42,0.25)',
           }}
         >
-          <CheckCircle2 size={58} className="text-brand-gold mx-auto mb-5" aria-hidden="true" />
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
+          >
+            <CheckCircle2 size={58} className="text-brand-gold mx-auto mb-5" aria-hidden="true" />
+          </motion.div>
           <h1 className="font-serif font-black text-3xl md:text-5xl text-brand-cream mb-3">
             Order Received
           </h1>
@@ -121,7 +131,7 @@ export default function OrderConfirmationPage() {
               </Link>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </main>
   );

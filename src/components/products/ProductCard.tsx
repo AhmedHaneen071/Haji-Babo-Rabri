@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import { Heart, ShoppingCart, Eye, Star } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
@@ -10,6 +11,7 @@ import { cn } from '@/lib/utils';
 interface ProductCardProps {
   product: Product;
   className?: string;
+  index?: number;
 }
 
 // Branded placeholder per product category
@@ -29,7 +31,7 @@ const categoryMarks: Record<string, string> = {
   'dairy-products': 'D',
 };
 
-export default function ProductCard({ product, className }: ProductCardProps) {
+export default function ProductCard({ product, className, index = 0 }: ProductCardProps) {
   const [wishlist, setWishlist] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const { addToCart } = useCart();
@@ -53,8 +55,13 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
   return (
     <Link href={`/product/${product.slug}`} className={cn('block group', className)}>
-      <article
-        className="relative rounded-xl overflow-hidden transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1.5"
+      <motion.article
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.5, delay: (index % 4) * 0.08, ease: 'easeOut' }}
+        whileHover={{ y: -6 }}
+        className="relative rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-card-hover"
         style={{
           background: 'linear-gradient(145deg, #0D5C3A, #0a4a2e)',
           border: '1px solid rgba(212,166,42,0.2)',
@@ -200,20 +207,24 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                 </div>
               )}
             </div>
-            <button
+            <motion.button
               onClick={handleAddToCart}
               disabled={!product.isAvailable}
+              whileHover={product.isAvailable ? { scale: 1.06 } : undefined}
+              whileTap={product.isAvailable ? { scale: 0.94 } : undefined}
+              animate={addedFeedback ? { scale: [1, 1.12, 1] } : undefined}
+              transition={{ duration: 0.2 }}
               className={cn(
-                'flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200',
+                'flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors duration-200',
                 addedFeedback
                   ? 'bg-green-600/20 border-green-500/40 text-green-400 border'
-                  : 'hover:bg-brand-gold/10 border border-brand-gold/30 hover:border-brand-gold/60 text-brand-gold hover:scale-105 active:scale-95'
+                  : 'hover:bg-brand-gold/10 border border-brand-gold/30 hover:border-brand-gold/60 text-brand-gold'
               )}
               aria-label={`Add ${product.name} to cart`}
             >
               <ShoppingCart size={12} />
               {addedFeedback ? 'Added!' : 'Add'}
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -222,7 +233,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           className="absolute inset-0 rounded-xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{ border: '1px solid rgba(212,166,42,0.5)' }}
         />
-      </article>
+      </motion.article>
     </Link>
   );
 }

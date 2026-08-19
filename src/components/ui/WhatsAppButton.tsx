@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'motion/react';
 import { useCart } from '@/context/CartContext';
 import { generateWhatsAppMessage, generateSimpleWhatsAppLink } from '@/lib/whatsapp';
 
@@ -26,27 +27,36 @@ export default function WhatsAppButton({
 
   if (variant === 'floating') {
     return (
-      <button
+      <motion.button
         onClick={handleClick}
         aria-label="Order on WhatsApp"
-        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-transform duration-200 hover:scale-110 active:scale-95 ${className}`}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 18, delay: 0.6 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.92 }}
+        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl ${className}`}
         style={{ backgroundColor: '#25D366', boxShadow: '0 4px 20px rgba(37,211,102,0.4)' }}
       >
         <WhatsAppIcon className="w-7 h-7 fill-white" />
         {/* Ping animation */}
-        <span
-          className="absolute inset-0 rounded-full animate-ping opacity-20"
+        <motion.span
+          className="absolute inset-0 rounded-full"
           style={{ backgroundColor: '#25D366' }}
+          animate={{ opacity: [0.4, 0], scale: [1, 1.7] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
         />
-      </button>
+      </motion.button>
     );
   }
 
   if (variant === 'full') {
     return (
-      <button
+      <motion.button
         onClick={handleClick}
-        className={`flex items-center justify-center gap-2.5 w-full py-3.5 px-6 rounded-lg font-semibold text-sm transition-all duration-200 hover:opacity-90 active:scale-98 ${className}`}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={`flex items-center justify-center gap-2.5 w-full py-3.5 px-6 rounded-lg font-semibold text-sm transition-colors duration-200 hover:opacity-90 ${className}`}
         style={{
           backgroundColor: '#25D366',
           color: '#fff',
@@ -55,15 +65,17 @@ export default function WhatsAppButton({
       >
         <WhatsAppIcon className="w-5 h-5 fill-current" />
         {label}
-      </button>
+      </motion.button>
     );
   }
 
   // inline
   return (
-    <button
+    <motion.button
       onClick={handleClick}
-      className={`inline-flex items-center gap-2 py-2.5 px-5 rounded-lg font-semibold text-sm transition-all duration-200 hover:opacity-90 ${className}`}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.96 }}
+      className={`inline-flex items-center gap-2 py-2.5 px-5 rounded-lg font-semibold text-sm transition-colors duration-200 hover:opacity-90 ${className}`}
       style={{
         backgroundColor: 'rgba(37,211,102,0.15)',
         border: '1px solid rgba(37,211,102,0.4)',
@@ -72,7 +84,7 @@ export default function WhatsAppButton({
     >
       <WhatsAppIcon className="w-4 h-4 fill-current" />
       {label}
-    </button>
+    </motion.button>
   );
 }
 

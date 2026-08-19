@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'motion/react';
 import { X, ShoppingCart, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import CartItemComponent from './CartItem';
@@ -39,28 +40,41 @@ export default function CartDrawer() {
   return (
     <>
       {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-          onClick={closeCart}
-          aria-hidden="true"
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="cart-backdrop"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={closeCart}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
 
       {/* Drawer */}
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Shopping cart"
-        className="fixed top-0 right-0 h-full z-50 flex flex-col transition-transform duration-300 ease-in-out"
-        style={{
-          width: 'min(420px, 95vw)',
-          transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
-          background: 'linear-gradient(160deg, #0D5C3A, #072D1E 40%, #041A12)',
-          borderLeft: '1px solid rgba(212,166,42,0.2)',
-          boxShadow: '-8px 0 40px rgba(0,0,0,0.6)',
-        }}
-      >
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="cart-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Shopping cart"
+            className="fixed top-0 right-0 h-full z-50 flex flex-col overflow-y-auto"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
+            style={{
+              width: 'min(420px, 95vw)',
+              background: 'linear-gradient(160deg, #0D5C3A, #072D1E 40%, #041A12)',
+              borderLeft: '1px solid rgba(212,166,42,0.2)',
+              boxShadow: '-8px 0 40px rgba(0,0,0,0.6)',
+            }}
+          >
         {/* Header */}
         <div
           className="flex items-center justify-between px-5 py-4 shrink-0"
@@ -126,7 +140,9 @@ export default function CartDrawer() {
           ) : (
             <div className="py-2">
               {items.map((item) => (
-                <CartItemComponent key={item.product.id} item={item} />
+                <AnimatePresence key={item.product.id} initial={false}>
+                  <CartItemComponent item={item} />
+                </AnimatePresence>
               ))}
             </div>
           )}
@@ -186,7 +202,9 @@ export default function CartDrawer() {
             </p>
           </div>
         )}
-      </div>
+        </motion.div>
+      )}
+      </AnimatePresence>
     </>
   );
 }

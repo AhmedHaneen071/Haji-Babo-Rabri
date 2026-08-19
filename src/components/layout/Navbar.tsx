@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'motion/react';
 import { Clock, MapPin, ShoppingCart, Menu, X, Phone } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { cn } from '@/lib/utils';
@@ -37,7 +38,10 @@ export default function Navbar() {
 
   return (
     <>
-      <header
+      <motion.header
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className={cn(
           'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
           scrolled
@@ -120,11 +124,20 @@ export default function Navbar() {
                 aria-label={`Cart (${cartCount} items)`}
               >
                 <ShoppingCart size={20} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-maroon text-brand-cream text-[10px] font-bold rounded-full flex items-center justify-center border border-brand-gold/30">
-                    {cartCount > 9 ? '9+' : cartCount}
-                  </span>
-                )}
+                <AnimatePresence>
+                  {cartCount > 0 && (
+                    <motion.span
+                      key="cart-count"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                      className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-maroon text-brand-cream text-[10px] font-bold rounded-full flex items-center justify-center border border-brand-gold/30"
+                    >
+                      {cartCount > 9 ? '9+' : cartCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
               <Link href="/menu" className="btn-gold text-sm py-2 px-4 hidden lg:inline-flex">
                 Order Now
@@ -139,11 +152,20 @@ export default function Navbar() {
                 aria-label={`Cart (${cartCount} items)`}
               >
                 <ShoppingCart size={20} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-maroon text-brand-cream text-[10px] font-bold rounded-full flex items-center justify-center">
-                    {cartCount > 9 ? '9+' : cartCount}
-                  </span>
-                )}
+                <AnimatePresence>
+                  {cartCount > 0 && (
+                    <motion.span
+                      key="cart-count-mobile"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                      className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-maroon text-brand-cream text-[10px] font-bold rounded-full flex items-center justify-center"
+                    >
+                      {cartCount > 9 ? '9+' : cartCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
@@ -156,30 +178,41 @@ export default function Navbar() {
             </div>
           </div>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Mobile Menu Overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-30 md:hidden"
-          onClick={() => setMobileOpen(false)}
-          aria-hidden="true"
-        >
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            key="overlay"
+            className="fixed inset-0 z-30 md:hidden"
+            onClick={() => setMobileOpen(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            aria-hidden="true"
+          >
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Menu Drawer */}
-      <div
-        className={cn(
-          'fixed top-0 left-0 bottom-0 z-40 w-72 md:hidden transition-transform duration-300 ease-in-out',
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
-        )}
-        style={{
-          background: 'linear-gradient(160deg, #072D1E, #041A12)',
-          borderRight: '1px solid rgba(212,166,42,0.2)',
-        }}
-      >
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            key="drawer"
+            className="fixed top-0 left-0 bottom-0 z-40 w-72 md:hidden overflow-y-auto"
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
+            style={{
+              background: 'linear-gradient(160deg, #072D1E, #041A12)',
+              borderRight: '1px solid rgba(212,166,42,0.2)',
+            }}
+          >
         {/* Mobile Header */}
         <div className="flex items-center justify-between p-4 border-b border-brand-gold/20">
           <div className="flex items-center gap-2">
@@ -245,7 +278,9 @@ export default function Navbar() {
           </p>
           <p className="text-xs text-brand-gold/60 text-center mt-1">Open 24 Hours | Since 1974</p>
         </div>
-      </div>
+      </motion.div>
+      )}
+    </AnimatePresence>
     </>
   );
 }

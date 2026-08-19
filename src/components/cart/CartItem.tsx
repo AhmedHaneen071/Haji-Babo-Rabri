@@ -1,5 +1,6 @@
 ﻿'use client';
 
+import { motion } from 'motion/react';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { CartItem as CartItemType } from '@/types';
 import { useCart } from '@/context/CartContext';
@@ -24,7 +25,12 @@ export default function CartItem({ item }: CartItemProps) {
     product.price !== null ? product.price * quantity : null;
 
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 40 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
       className="flex items-start gap-3 py-4"
       style={{ borderBottom: '1px solid rgba(212,166,42,0.12)' }}
     >
@@ -64,9 +70,15 @@ export default function CartItem({ item }: CartItemProps) {
             >
               <Minus size={12} />
             </button>
-            <span className="w-8 text-center text-brand-cream text-xs font-semibold">
+            <motion.span
+              key={quantity}
+              initial={{ scale: 1.3 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+              className="w-8 inline-block text-center text-brand-cream text-xs font-semibold"
+            >
               {quantity}
-            </span>
+            </motion.span>
             <button
               onClick={() => updateQuantity(product.id, quantity + 1)}
               className="w-7 h-7 flex items-center justify-center text-brand-cream/60 hover:text-brand-cream hover:bg-white/10 transition-colors"
@@ -102,6 +114,6 @@ export default function CartItem({ item }: CartItemProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import {
   Star, ShoppingCart, ChevronLeft, Plus, Minus,
   Package, Thermometer, Info, Leaf
@@ -44,17 +45,27 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     <div className="min-h-screen" style={{ background: '#041A12' }}>
       <div className="section-container py-8 pt-24">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-brand-cream/40 mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-brand-gold transition-colors">Home</Link>
-          <span aria-hidden="true">/</span>
-          <Link href="/menu" className="hover:text-brand-gold transition-colors">Menu</Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-brand-cream/70" aria-current="page">{product.name}</span>
-        </nav>
+        <motion.nav
+        className="flex items-center gap-2 text-sm text-brand-cream/40 mb-8"
+        aria-label="Breadcrumb"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Link href="/" className="hover:text-brand-gold transition-colors">Home</Link>
+        <span aria-hidden="true">/</span>
+        <Link href="/menu" className="hover:text-brand-gold transition-colors">Menu</Link>
+        <span aria-hidden="true">/</span>
+        <span className="text-brand-cream/70" aria-current="page">{product.name}</span>
+      </motion.nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Left — image */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
             <div
               className="relative rounded-2xl overflow-hidden aspect-square flex items-center justify-center"
               style={{
@@ -110,10 +121,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right — details */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+          >
             {/* Category */}
             <div className="flex items-center gap-2 mb-3">
               <span className="badge-gold uppercase tracking-widest text-[10px]">
@@ -204,9 +219,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </button>
                 </div>
 
-                <button
+                <motion.button
                   onClick={handleAdd}
-                  className="flex-1 flex items-center justify-center gap-2 h-11 rounded-lg font-bold text-sm transition-all duration-200"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  animate={added ? { scale: [1, 1.08, 1] } : undefined}
+                  transition={{ duration: 0.2 }}
+                  className="flex-1 flex items-center justify-center gap-2 h-11 rounded-lg font-bold text-sm"
                   style={
                     added
                       ? { background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', color: '#86efac' }
@@ -216,7 +235,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 >
                   <ShoppingCart size={16} aria-hidden="true" />
                   {added ? '✓ Added to Cart!' : 'Add to Cart'}
-                </button>
+                </motion.button>
               </div>
             )}
 
@@ -296,7 +315,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </div>
               </details>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Related products */}
@@ -307,13 +326,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               You May Also Like
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {related.map((p) => {
+              {related.map((p, i) => {
                 const relEmoji = categoryEmojis[p.category] ?? '🍽️';
                 return (
-                  <Link
+                  <motion.div
                     key={p.id}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
+                    whileHover={{ y: -4 }}
+                  >
+                  <Link
                     href={`/product/${p.slug}`}
-                    className="group flex items-center gap-4 p-4 rounded-xl transition-all hover:-translate-y-1"
+                    className="group flex items-center gap-4 p-4 rounded-xl block"
                     style={{
                       background: 'linear-gradient(145deg, #0D5C3A, #0a4a2e)',
                       border: '1px solid rgba(212,166,42,0.2)',
@@ -333,6 +359,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       <p className="text-brand-gold text-xs font-bold mt-0.5">{p.priceDisplay}</p>
                     </div>
                   </Link>
+                  </motion.div>
                 );
               })}
             </div>

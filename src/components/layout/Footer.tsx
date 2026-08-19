@@ -1,6 +1,7 @@
 ﻿'use client';
 
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Globe, Clock } from 'lucide-react';
 import { GoldDivider, OrnamentDivider } from '@/components/ui/OrnamentDivider';
 
@@ -37,7 +38,13 @@ export default function Footer() {
       <div className="section-container py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand column */}
-          <div className="lg:col-span-1">
+          <motion.div
+            className="lg:col-span-1"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full border-2 border-brand-gold/50 flex items-center justify-center bg-brand-green-dark">
                 <span className="text-brand-gold font-serif font-bold text-xl">HBR</span>
@@ -80,10 +87,15 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Links */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+          >
             <h3 className="font-serif font-semibold text-brand-cream text-base mb-4">
               Quick Links
             </h3>
@@ -101,10 +113,15 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Our Menu */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
+          >
             <h3 className="font-serif font-semibold text-brand-cream text-base mb-4">
               Our Menu
             </h3>
@@ -122,10 +139,15 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contact */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
+          >
             <h3 className="font-serif font-semibold text-brand-cream text-base mb-4">
               Find Us
             </h3>
@@ -170,7 +192,7 @@ export default function Footer() {
                 <span className="text-brand-cream/55 text-sm">Open 24 Hours, 7 Days</span>
               </li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </div>
 
