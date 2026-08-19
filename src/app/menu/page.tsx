@@ -1,7 +1,5 @@
 import { Metadata } from 'next';
-import ProductGrid from '@/components/products/ProductGrid';
-import { ProductCategory } from '@/types';
-import { categories } from '@/data/products';
+import MenuGrid from '@/components/products/MenuGrid';
 import { HeritageBadge, OrnamentDivider } from '@/components/ui/OrnamentDivider';
 
 export const metadata: Metadata = {
@@ -10,17 +8,7 @@ export const metadata: Metadata = {
     'Browse and order Haji Babo Rabri favorites including plain rabri, pista rabri, kheer, ras malai, khoya, and desi ghee.',
 };
 
-interface MenuPageProps {
-  searchParams?: Promise<{ category?: string }>;
-}
-
-export default async function MenuPage({ searchParams }: MenuPageProps) {
-  const params = await searchParams;
-  const requested = params?.category;
-  const initialCategory = categories.some((category) => category.id === requested)
-    ? (requested as ProductCategory)
-    : 'all';
-
+export default function MenuPage() {
   return (
     <main className="min-h-screen pt-20" style={{ background: '#041A12' }}>
       <section
@@ -45,7 +33,7 @@ export default async function MenuPage({ searchParams }: MenuPageProps) {
       </section>
 
       <section className="section-container pb-20">
-        <ProductGrid initialCategory={initialCategory} />
+        <MenuGrid />
       </section>
     </main>
   );

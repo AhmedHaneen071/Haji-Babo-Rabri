@@ -36,6 +36,3 @@ out/
 
 # TypeScript
 tsconfig.tsbuildinfo
-
-# GitHub
-.github/

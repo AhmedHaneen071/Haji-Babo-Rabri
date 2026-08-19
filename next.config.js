@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  basePath: '/Haji-Babo-Rabri',
+  assetPrefix: '/Haji-Babo-Rabri/',
+  images: {
+    unoptimized: true,
+  },
   experimental: {
     useWasmBinary: true,
-  },
-  images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'via.placeholder.com' },
-    ],
   },
 };
 

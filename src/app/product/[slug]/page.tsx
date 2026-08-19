@@ -1,10 +1,14 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getProductBySlug } from '@/data/products';
+import { getProductBySlug, products } from '@/data/products';
 import ProductDetailClient from './ProductDetailClient';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export function generateStaticParams() {
+  return products.map((product) => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
