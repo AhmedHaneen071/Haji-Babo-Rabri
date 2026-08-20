@@ -66,6 +66,13 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          # Enable GitHub Pages (Source: GitHub Actions) if not already configured.
+          # We manage basePath ourselves via GH_PAGES_BASE_PATH, so we do NOT pass
+          # static_site_generator (it injects basePath on export and breaks builds).
+          enablement: true
       - name: Build with Next.js
         env:
           # Served from https://<user>.github.io/Haji-Babo-Rabri/
