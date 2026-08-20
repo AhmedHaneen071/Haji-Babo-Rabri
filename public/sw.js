@@ -1,5 +1,5 @@
 const CACHE_NAME = 'hbr-cache-v1';
-const PRECACHE_URLS = ['/', '/index.html', '/offline.html', '/icons/icon-192.png', '/icons/icon-512.png'];
+const PRECACHE_URLS = ['./', './offline.html', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -41,7 +41,7 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(() => {
-          return cached || caches.match('/offline.html');
+          return cached || caches.match('./offline.html');
         });
       return cached || networkFetch;
     })

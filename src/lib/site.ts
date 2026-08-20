@@ -1,5 +1,6 @@
 export const SITE_NAME = 'Haji Babo Rabri';
 export const SITE_TITLE = 'Haji Babo Rabri | Hyderabad Since 1974';
+export const BASE_PATH = process.env.GH_PAGES_BASE_PATH || '';
 export const SITE_DESCRIPTION =
   'Authentic Hyderabadi rabri, kheer, ras malai, khoya, desi ghee, and traditional dairy sweets from Haji Babo Rabri. Slow-cooked dairy delicacies since 1974.';
 export const SITE_URL =
