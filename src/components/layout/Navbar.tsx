@@ -4,13 +4,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { Clock, MapPin, ShoppingCart, Menu, X, Phone } from 'lucide-react';
+import { Clock, MapPin, ShoppingCart, Menu, X, Phone, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Menu' },
+  { href: '/catering', label: 'Catering' },
   { href: '/about', label: 'Our Story' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -19,6 +21,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { cartCount, openCart } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -118,6 +121,23 @@ export default function Navbar() {
                 <Phone size={14} />
                 Call Now
               </a>
+              <Link
+                href="/wishlist"
+                className="relative p-2 text-brand-cream/80 hover:text-brand-cream transition-colors"
+                aria-label={`Wishlist (${wishlistCount} items)`}
+              >
+                <Heart size={20} />
+                {wishlistCount > 0 && (
+                  <motion.span
+                    key="wishlist-count"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-maroon text-brand-cream text-[10px] font-bold rounded-full flex items-center justify-center border border-brand-gold/30"
+                  >
+                    {wishlistCount > 9 ? '9+' : wishlistCount}
+                  </motion.span>
+                )}
+              </Link>
               <button
                 onClick={openCart}
                 className="relative p-2 text-brand-cream/80 hover:text-brand-cream transition-colors"
@@ -253,7 +273,15 @@ export default function Navbar() {
           </ul>
 
           <div className="mt-6 space-y-3">
-            <Link href="/menu" className="btn-gold w-full justify-center text-sm py-3">
+            <Link
+              href="/wishlist"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded border border-brand-gold/30 text-brand-gold text-sm font-semibold"
+            >
+              <Heart size={16} aria-hidden="true" />
+              Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
+            </Link>
+            <Link href="/menu" onClick={() => setMobileOpen(false)} className="btn-gold w-full justify-center text-sm py-3">
               <ShoppingCart size={16} aria-hidden="true" />
               Order Now
             </Link>

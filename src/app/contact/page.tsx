@@ -2,11 +2,18 @@
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 import Reveal from '@/components/ui/Reveal';
 import { OrnamentDivider, HeritageBadge } from '@/components/ui/OrnamentDivider';
+import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Contact & Location  Haji Babo Rabri | Hyderabad',
+  title: 'Contact & Location',
   description:
     'Visit Haji Babo Rabri at Salahuddin Road, Hyderabad. Open 24 hours. Call +92 312 2307882 or order via WhatsApp.',
+  alternates: { canonical: '/contact' },
+  openGraph: {
+    title: `Contact & Location | ${SITE_NAME}`,
+    description: 'Visit Haji Babo Rabri at Salahuddin Road, Hyderabad. Open 24 hours.',
+    type: 'website',
+  },
 };
 
 const contactCards = [

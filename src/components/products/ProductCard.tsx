@@ -6,6 +6,7 @@ import { motion } from 'motion/react';
 import { Heart, ShoppingCart, Eye, Star } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
 import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
@@ -32,9 +33,10 @@ const categoryMarks: Record<string, string> = {
 };
 
 export default function ProductCard({ product, className, index = 0 }: ProductCardProps) {
-  const [wishlist, setWishlist] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const { addToCart } = useCart();
+  const { isWishlisted, toggle } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -47,7 +49,7 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setWishlist(!wishlist);
+    toggle(product.id);
   };
 
   const colorClass = categoryColors[product.category] ?? 'from-brand-green to-brand-green-dark';
@@ -116,13 +118,13 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
               background: 'rgba(4,26,18,0.7)',
               border: '1px solid rgba(212,166,42,0.3)',
             }}
-            aria-label={wishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+            aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <Heart
               size={14}
               className={cn(
                 'transition-colors',
-                wishlist ? 'fill-red-400 stroke-red-400' : 'stroke-brand-cream/60'
+                wishlisted ? 'fill-red-400 stroke-red-400' : 'stroke-brand-cream/60'
               )}
             />
           </button>

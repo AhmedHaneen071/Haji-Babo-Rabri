@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 import { CartItem, CartState, Product } from '@/types';
+import { Coupon, calculateDiscount, couponExpired, getCoupon } from '@/lib/coupons';
 
 type CartAction =
   | { type: 'ADD_ITEM'; payload: Product }
@@ -11,7 +12,9 @@ type CartAction =
   | { type: 'SET_CART'; payload: CartItem[] }
   | { type: 'TOGGLE_CART' }
   | { type: 'OPEN_CART' }
-  | { type: 'CLOSE_CART' };
+  | { type: 'CLOSE_CART' }
+  | { type: 'APPLY_COUPON'; payload: string }
+  | { type: 'REMOVE_COUPON' };
 
 interface CartContextType {
   state: CartState;
@@ -25,7 +28,11 @@ interface CartContextType {
   cartTotal: number;
   cartCount: number;
   deliveryCharge: number;
+  coupon: Coupon | null;
+  discount: number;
   orderTotal: number;
+  applyCoupon: (code: string) => { ok: boolean; message: string };
+  removeCoupon: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -84,6 +91,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, isOpen: true };
     case 'CLOSE_CART':
       return { ...state, isOpen: false };
+    case 'APPLY_COUPON':
+      return { ...state, coupon: action.payload };
+    case 'REMOVE_COUPON':
+      return { ...state, coupon: null };
     default:
       return state;
   }
@@ -92,6 +103,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 const initialState: CartState = {
   items: [],
   isOpen: false,
+  coupon: null,
 };
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -103,9 +115,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const saved = localStorage.getItem('hbr-cart');
       if (saved) {
-        const parsed: CartItem[] = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
           dispatch({ type: 'SET_CART', payload: parsed });
+        } else if (parsed && typeof parsed === 'object') {
+          if (Array.isArray(parsed.items)) {
+            dispatch({ type: 'SET_CART', payload: parsed.items });
+          }
+          if (typeof parsed.coupon === 'string') {
+            dispatch({ type: 'APPLY_COUPON', payload: parsed.coupon });
+          }
         }
       }
     } catch {
@@ -115,9 +134,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem('hbr-cart', JSON.stringify(state.items));
+      localStorage.setItem(
+        'hbr-cart',
+        JSON.stringify({ items: state.items, coupon: state.coupon })
+      );
     }
-  }, [state.items, mounted]);
+  }, [state.items, state.coupon, mounted]);
 
   const cartTotal = state.items.reduce((sum, item) => {
     if (item.product.price === null) return sum;
@@ -126,7 +148,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const cartCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
   const deliveryCharge = cartCount > 0 ? DELIVERY_CHARGE : 0;
-  const orderTotal = cartTotal + deliveryCharge;
+  const coupon = state.coupon ? getCoupon(state.coupon) : null;
+  const discount = coupon ? calculateDiscount(coupon, cartTotal) : 0;
+  const orderTotal = Math.max(0, cartTotal + deliveryCharge - discount);
 
   const addToCart = (product: Product) => {
     dispatch({ type: 'ADD_ITEM', payload: product });
@@ -143,6 +167,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const openCart = () => dispatch({ type: 'OPEN_CART' });
   const closeCart = () => dispatch({ type: 'CLOSE_CART' });
 
+  const applyCoupon = (code: string): { ok: boolean; message: string } => {
+    const couponToApply = getCoupon(code);
+    if (!couponToApply) return { ok: false, message: 'Invalid coupon code' };
+    if (couponExpired(couponToApply))
+      return { ok: false, message: 'This coupon has expired' };
+    if (couponToApply.minOrder && cartTotal < couponToApply.minOrder)
+      return {
+        ok: false,
+        message: `Minimum order PKR ${couponToApply.minOrder.toLocaleString()} required`,
+      };
+    dispatch({ type: 'APPLY_COUPON', payload: couponToApply.code });
+    return { ok: true, message: `${couponToApply.code} applied — enjoy your discount!` };
+  };
+
+  const removeCoupon = () => dispatch({ type: 'REMOVE_COUPON' });
+
   return (
     <CartContext.Provider
       value={{
@@ -157,7 +197,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         cartTotal,
         cartCount,
         deliveryCharge,
+        coupon,
+        discount,
         orderTotal,
+        applyCoupon,
+        removeCoupon,
       }}
     >
       {children}

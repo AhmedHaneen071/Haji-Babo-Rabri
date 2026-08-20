@@ -2,11 +2,17 @@ import { Metadata } from 'next';
 import MenuGrid from '@/components/products/MenuGrid';
 import Reveal from '@/components/ui/Reveal';
 import { HeritageBadge, OrnamentDivider } from '@/components/ui/OrnamentDivider';
+import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Menu & Online Order',
   description:
     'Browse and order Haji Babo Rabri favorites including plain rabri, pista rabri, kheer, ras malai, khoya, and desi ghee.',
+  alternates: { canonical: '/menu' },
+  openGraph: {
+    title: `Menu & Online Order | ${SITE_NAME}`,
+    type: 'website',
+  },
 };
 
 export default function MenuPage() {

@@ -38,6 +38,7 @@ export interface CartItem {
 export interface CartState {
   items: CartItem[];
   isOpen: boolean;
+  coupon?: string | null;
 }
 
 export interface CheckoutForm {

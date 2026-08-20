@@ -1,9 +1,9 @@
 ﻿'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ShoppingCart, Trash2 } from 'lucide-react';
+import { X, ShoppingCart, Trash2, Ticket, Check, XCircle } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import CartItemComponent from './CartItem';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
@@ -17,10 +17,26 @@ export default function CartDrawer() {
     cartTotal,
     cartCount,
     deliveryCharge,
+    coupon,
+    discount,
     orderTotal,
+    applyCoupon,
+    removeCoupon,
   } = useCart();
 
   const { isOpen, items } = state;
+
+  const [couponInput, setCouponInput] = useState('');
+  const [couponFeedback, setCouponFeedback] = useState<{
+    ok: boolean;
+    message: string;
+  } | null>(null);
+
+  const handleApplyCoupon = () => {
+    const result = applyCoupon(couponInput);
+    setCouponFeedback(result);
+    if (result.ok) setCouponInput('');
+  };
 
   // Lock body scroll when open
   useEffect(() => {
@@ -162,6 +178,16 @@ export default function CartDrawer() {
                   PKR {cartTotal.toLocaleString()}
                 </span>
               </div>
+              {discount > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-brand-cream/60">
+                    Discount{coupon ? ` (${coupon.code})` : ''}
+                  </span>
+                  <span className="text-green-400 font-medium">
+                    -PKR {discount.toLocaleString()}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-sm">
                 <span className="text-brand-cream/60">Delivery</span>
                 <span className="text-brand-cream/60">
@@ -183,6 +209,60 @@ export default function CartDrawer() {
                   PKR {orderTotal.toLocaleString()}
                 </span>
               </div>
+            </div>
+
+            {/* Coupon */}
+            <div className="mb-4">
+              {coupon ? (
+                <div className="flex items-center justify-between gap-2 p-3 rounded-lg"
+                  style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)' }}
+                >
+                  <div className="flex items-center gap-2">
+                    <Ticket size={15} className="text-green-400" />
+                    <div>
+                      <p className="text-green-400 text-xs font-bold">{coupon.code}</p>
+                      <p className="text-brand-cream/50 text-[10px]">{coupon.description}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={removeCoupon}
+                    className="text-brand-cream/40 hover:text-red-400 transition-colors"
+                    aria-label="Remove coupon"
+                  >
+                    <XCircle size={16} />
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Ticket size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-gold/50" />
+                      <input
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value)}
+                        placeholder="Coupon code (e.g. WELCOME10)"
+                        className="w-full bg-black/20 border border-brand-gold/20 rounded-lg pl-9 pr-3 py-2.5 text-xs text-brand-cream placeholder-brand-cream/30 focus:outline-none focus:border-brand-gold/50"
+                        aria-label="Coupon code"
+                      />
+                    </div>
+                    <button
+                      onClick={handleApplyCoupon}
+                      className="px-4 py-2.5 rounded-lg text-xs font-bold border border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10 transition-colors"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {couponFeedback && (
+                    <p className={`flex items-center gap-1 text-[11px] mt-1.5 ${couponFeedback.ok ? 'text-green-400' : 'text-red-400'}`}>
+                      {couponFeedback.ok ? <Check size={11} /> : <X size={11} />}
+                      {couponFeedback.message}
+                    </p>
+                  )}
+                  <p className="text-brand-cream/25 text-[10px] mt-1.5">
+                    Try WELCOME10, EID15, or SAVE200
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* CTAs */}

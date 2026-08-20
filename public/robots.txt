@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://hajibaborabri.com/sitemap.xml
+Sitemap: https://haji-babo-rabri.web.app/sitemap.xml

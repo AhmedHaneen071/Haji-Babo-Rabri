@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline | Haji Babo Rabri</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #041a12;
+      color: #f7ebd0;
+      text-align: center;
+      padding: 24px;
+    }
+    .box { max-width: 420px; }
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border: 2px solid rgba(212, 166, 42, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #d4a62a;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    h1 { font-size: 24px; margin: 0 0 12px; }
+    p { color: rgba(247, 235, 208, 0.6); font-size: 14px; line-height: 1.6; margin: 0; }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #041a12;
+      background: linear-gradient(135deg, #a87b18, #d4a62a);
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">HBR</div>
+    <h1>You're offline</h1>
+    <p>You're not connected to the internet right now. Please reconnect to browse the menu and place an order.</p>
+    <a href="/" onclick="event.preventDefault(); window.location.reload();">Retry</a>
+  </div>
+</body>
+</html>

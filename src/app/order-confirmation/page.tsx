@@ -14,6 +14,8 @@ interface StoredOrder {
   customer: CheckoutForm;
   cartTotal: number;
   deliveryCharge: number;
+  discount: number;
+  couponCode: string | null;
   orderTotal: number;
 }
 
@@ -33,7 +35,11 @@ export default function OrderConfirmationPage() {
 
   const handleWhatsApp = () => {
     if (!order) return;
-    window.open(generateWhatsAppMessage(order.items, order.customer), '_blank', 'noopener,noreferrer');
+    window.open(
+      generateWhatsAppMessage(order.items, order.customer, order.discount, order.couponCode ?? undefined),
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   return (
@@ -102,6 +108,14 @@ export default function OrderConfirmationPage() {
                   <span className="text-brand-cream/60">Subtotal</span>
                   <span className="text-brand-cream">PKR {order.cartTotal.toLocaleString()}</span>
                 </div>
+                {order.discount > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-brand-cream/60">
+                      Discount{order.couponCode ? ` (${order.couponCode})` : ''}
+                    </span>
+                    <span className="text-green-400">-PKR {order.discount.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-brand-cream/60">Delivery</span>
                   <span className="text-brand-cream">PKR {order.deliveryCharge.toLocaleString()}</span>

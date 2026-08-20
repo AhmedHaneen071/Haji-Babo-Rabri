@@ -2,11 +2,18 @@
 import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 import { OrnamentDivider, GoldDivider, HeritageBadge } from '@/components/ui/OrnamentDivider';
+import { SITE_NAME, SITE_DESCRIPTION } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Our Story  Haji Babo Rabri | Heritage Since 1974',
+  title: 'Our Story',
   description:
     'Discover the story of Haji Babo Rabri  Hyderabad\'s most beloved traditional rabri and dairy dessert shop, serving authentic taste since 1974.',
+  alternates: { canonical: '/about' },
+  openGraph: {
+    title: `Our Story | ${SITE_NAME}`,
+    description: SITE_DESCRIPTION,
+    type: 'website',
+  },
 };
 
 const milestones = [

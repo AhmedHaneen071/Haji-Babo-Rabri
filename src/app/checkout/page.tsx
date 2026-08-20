@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ShoppingCart, ChevronRight, CreditCard, Truck, Smartphone } from 'lucide-react';
+import { ShoppingCart, ChevronRight, CreditCard, Truck, Smartphone, Ticket, Check, X, XCircle } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { CheckoutForm } from '@/types';
 import { GoldDivider, OrnamentDivider } from '@/components/ui/OrnamentDivider';
@@ -28,8 +28,17 @@ const cities = [
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { state, cartTotal, deliveryCharge, orderTotal, clearCart } = useCart();
+  const { state, cartTotal, deliveryCharge, coupon, discount, orderTotal, applyCoupon, removeCoupon, clearCart } = useCart();
   const { items } = state;
+
+  const [couponInput, setCouponInput] = useState('');
+  const [couponFeedback, setCouponFeedback] = useState<{ ok: boolean; message: string } | null>(null);
+
+  const handleApplyCoupon = () => {
+    const result = applyCoupon(couponInput);
+    setCouponFeedback(result);
+    if (result.ok) setCouponInput('');
+  };
 
   const [form, setForm] = useState<CheckoutForm>({
     fullName: '',
@@ -74,7 +83,7 @@ export default function CheckoutPage() {
     // Store order in sessionStorage for confirmation page
     sessionStorage.setItem(
       'hbr-last-order',
-      JSON.stringify({ orderId, items, customer: form, cartTotal, deliveryCharge, orderTotal })
+      JSON.stringify({ orderId, items, customer: form, cartTotal, deliveryCharge, discount, couponCode: coupon?.code ?? null, orderTotal })
     );
 
     clearCart();
@@ -82,7 +91,7 @@ export default function CheckoutPage() {
   };
 
   const handleWhatsApp = () => {
-    const url = generateWhatsAppMessage(items, form);
+    const url = generateWhatsAppMessage(items, form, discount, coupon?.code);
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
@@ -372,6 +381,12 @@ export default function CheckoutPage() {
                   <span className="text-brand-cream/60">Subtotal</span>
                   <span className="text-brand-cream">PKR {cartTotal.toLocaleString()}</span>
                 </div>
+                {discount > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-brand-cream/60">Discount{coupon ? ` (${coupon.code})` : ''}</span>
+                    <span className="text-green-400">-PKR {discount.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-brand-cream/60">Delivery</span>
                   <span className="text-brand-cream/60">PKR {deliveryCharge.toLocaleString()}</span>
@@ -390,6 +405,60 @@ export default function CheckoutPage() {
                     PKR {orderTotal.toLocaleString()}
                   </span>
                 </div>
+              </div>
+
+              {/* Coupon */}
+              <div className="mt-5">
+                {coupon ? (
+                  <div className="flex items-center justify-between gap-2 p-3 rounded-lg"
+                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)' }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Ticket size={15} className="text-green-400" />
+                      <div>
+                        <p className="text-green-400 text-xs font-bold">{coupon.code}</p>
+                        <p className="text-brand-cream/50 text-[10px]">{coupon.description}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={removeCoupon}
+                      className="text-brand-cream/40 hover:text-red-400 transition-colors"
+                      aria-label="Remove coupon"
+                    >
+                      <XCircle size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Ticket size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-gold/50" />
+                        <input
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          placeholder="Coupon code"
+                          className="form-input text-sm pl-9"
+                          aria-label="Coupon code"
+                        />
+                      </div>
+                      <button
+                        onClick={handleApplyCoupon}
+                        className="px-4 rounded-lg text-xs font-bold border border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10 transition-colors shrink-0"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {couponFeedback && (
+                      <p className={`flex items-center gap-1 text-[11px] mt-1.5 ${couponFeedback.ok ? 'text-green-400' : 'text-red-400'}`}>
+                        {couponFeedback.ok ? <Check size={11} /> : <X size={11} />}
+                        {couponFeedback.message}
+                      </p>
+                    )}
+                    <p className="text-brand-cream/25 text-[10px] mt-1.5">
+                      Try WELCOME10, EID15, or SAVE200
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="mt-4 p-3 rounded-lg text-xs text-brand-cream/45 leading-relaxed"

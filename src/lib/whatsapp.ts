@@ -4,7 +4,9 @@ export const WHATSAPP_NUMBER = '923122307882';
 
 export function generateWhatsAppMessage(
   items: CartItem[],
-  customer?: Partial<CheckoutForm>
+  customer?: Partial<CheckoutForm>,
+  discount = 0,
+  couponCode?: string
 ): string {
   let message = ' *New Order  Haji Babo Rabri*\n';
   message += '_Heritage in every spoon_ \n\n';
@@ -41,9 +43,12 @@ export function generateWhatsAppMessage(
   message += '\n';
   if (total > 0) {
     message += ` *Subtotal:* PKR ${total.toLocaleString()}\n`;
+    if (discount > 0) {
+      message += ` *Discount${couponCode ? ` (${couponCode})` : ''}:* -PKR ${discount.toLocaleString()}\n`;
+    }
     message += ` *Delivery:* To be confirmed\n`;
     const deliveryCharge = 200;
-    message += ` *Total:* PKR ${(total + deliveryCharge).toLocaleString()}\n`;
+    message += ` *Total:* PKR ${(total + deliveryCharge - discount).toLocaleString()}\n`;
   }
 
   if (customer?.paymentMethod) {

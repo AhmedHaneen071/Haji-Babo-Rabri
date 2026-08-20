@@ -8,6 +8,8 @@ import { GoldDivider, OrnamentDivider } from '@/components/ui/OrnamentDivider';
 const quickLinks = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Menu & Shop' },
+  { href: '/catering', label: 'Catering & Bulk' },
+  { href: '/wishlist', label: 'Wishlist' },
   { href: '/about', label: 'Our Story' },
   { href: '/contact', label: 'Contact Us' },
   { href: '/checkout', label: 'Checkout' },
